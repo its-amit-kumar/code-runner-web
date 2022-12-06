@@ -33,7 +33,8 @@ class runCode{
                 persistent:true
             });
     }
-    makeSubmission = () =>{
+    makeSubmission = async () =>{
+        //throw new error("hello error")
         var msg = JSON.stringify({
             Id:this.Id,
             Code:this.props.Code,
@@ -45,7 +46,7 @@ class runCode{
         this.msg = msg
         this.makeInitialEntry()
         var amqp = require('amqplib/callback_api');
-        this.sendRequestToQueue()
+        await this.sendRequestToQueue()
         
         return this.Id;
 

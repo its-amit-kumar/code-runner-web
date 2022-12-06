@@ -1,6 +1,6 @@
 let runCode = require('../classes/runCode')
 
-const makeCodeSubmission = (req, res) =>{
+const makeCodeSubmission = async (req, res) =>{
     currentInstance = new runCode({
         Code:req.body.Code,
         TimeLimit:req.body.TimeLimit,
@@ -8,7 +8,7 @@ const makeCodeSubmission = (req, res) =>{
         Language:req.body.Language,
         Input:req.body.Input
     })
-    var idSubmisision = currentInstance.makeSubmission();
+    var idSubmisision = await currentInstance.makeSubmission();
     res.status(202)
     res.json({success:true, submissionId:idSubmisision})
 
