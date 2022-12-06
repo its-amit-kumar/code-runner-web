@@ -23,11 +23,13 @@ const register = async (req, res) => {
     catch(error){
         console.log("An error occured while getting user")
         console.log(error)
+        res.status(500)
         res.json({success:false, errorCode:"-1", errorMessage:"Cannot register user right now"})
     }
     if(Object.keys(alreadyExists).length > 0){
         console.log(alreadyExists)
         console.log(typeof alreadyExists)
+        res.status(200)
         res.json({success:false, errorCode:"1", errorMessage:"Email already registered"})
         return 
     }
@@ -56,6 +58,7 @@ const register = async (req, res) => {
         })
         newApiToken.save({session})
         await session.commitTransaction()
+        res.status(200)
         res.json({success:true, errorCode:"0", errorMessage:""})
     }
     catch(error){
@@ -63,6 +66,7 @@ const register = async (req, res) => {
        console.log("An error occured in the transaction")
        console.log(error)
        console.log("--------------------") 
+       res.status(500)
        res.json({success:false, errorCode:"-1", errorMessage:"An error occured while registering user"})
        await session.abortTransaction()
     }

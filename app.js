@@ -5,12 +5,14 @@ const dotenv = require("dotenv")
 const getSubmission = require('./routes/getSubmission')
 const user = require('./routes/user')
 const app = express()
-
+const auth = require('./middleware/auth')
+const premium = require('./routes/premium')
+const {setupLogging} = require("./middleware/logging")
 dotenv.config()
 const connectDB = require('./config/db')
 connectDB()
 rabbitMQConnectionInit()
-
+setupLogging(app)
 var cors = require("cors");
 app.use(cors());
 app.use(express.json())
@@ -18,5 +20,6 @@ app.use(express.urlencoded({extended : true}))
 app.use('/user', user)
 app.use('/submitCode', submitCode)
 app.use('/getSubmission', getSubmission)
+app.use('/premium', auth, premium)
 console.log("listening")
 app.listen(5000)

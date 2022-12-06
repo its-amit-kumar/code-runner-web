@@ -9,6 +9,7 @@ const makeCodeSubmission = (req, res) =>{
         Input:req.body.Input
     })
     var idSubmisision = currentInstance.makeSubmission();
+    res.status(202)
     res.json({success:true, submissionId:idSubmisision})
 
 }
