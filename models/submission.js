@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-require('mongoose-long')(mongoose);
-const {Types: {Long}} = mongoose;
 
 function getCosts(value) {
     if (typeof value !== 'undefined') {
@@ -12,7 +10,7 @@ function getCosts(value) {
 
 const submission = mongoose.Schema({
     Id:{
-        type: Long,
+        type: Number,
         required:true,
     },
     isCompleted:{
