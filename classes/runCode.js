@@ -6,9 +6,8 @@ class runCode{
     constructor(props){
         this.props = props;
         this.queue = "codeQueue";
-        this.Id = uuidv4();
     }
-    makeInitialEntry = () => {
+    makeInitialEntry = async () => {
         var submissionData = new submission({
             Id:this.Id,
             timeTaken:-1,
@@ -18,7 +17,7 @@ class runCode{
             stdout:"-",
             isCompleted:-1,
         })
-        submissionData.save();
+        await submissionData.save();
 
     }
     sendRequestToQueue = async (error0, connection) => {
@@ -34,6 +33,7 @@ class runCode{
             });
     }
     makeSubmission = async () =>{
+        this.Id = await submission.countDocuments({})
         //throw new error("hello error")
         var msg = JSON.stringify({
             Id:this.Id,
@@ -44,7 +44,7 @@ class runCode{
             Input:this.props.Input
         });
         this.msg = msg
-        this.makeInitialEntry()
+        await this.makeInitialEntry()
         var amqp = require('amqplib/callback_api');
         await this.sendRequestToQueue()
         

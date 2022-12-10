@@ -51,7 +51,7 @@ amqp.connect('amqps://aalulqoj:CAUu_Ev2WzzLXA4eeWKl6hAzdYdgoZYj@puffin.rmq2.clou
             i++;
             console.log("received")
             m = JSON.parse(msg.content)
-            console.log(m.Id)
+            console.log(m)
             try {
             var documentOfSubmission = await conn.db("test").collection("submissions").findOne({Id:m.Id})
             }
