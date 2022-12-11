@@ -43,7 +43,69 @@ app.use((error, request, response, next) => {
     // 3. keyword:enum - The supplied value is not allowed, it should only be within allowed valued, the allowed values can be found in params with key as allowedValues mapping to an array of allowed values
     // 4. keyword:minimum - The supplied value is below the minimum value, the threshold of minimum value can be found in params with key as limit
     // 5. keyword:maximum - same as above but with maximum
-    response.status(400).send(error.validationErrors);
+    // 6. keyword:pattern - The supplied value does not match the pattern, the pattern can be found in params with key as pattern
+    // 1
+    if(error.validationErrors.body[0].keyword == "type"){
+      response.status(400).json({
+        success: false,
+        errorCode:1,
+        errorParameter: error.validationErrors.body[0].instancePath.substr(1),
+        errorReason: error.validationErrors.body[0].keyword,
+        errorMessage: error.validationErrors.body[0].message,
+      })
+    }
+    else if(error.validationErrors.body[0].keyword == "required"){
+      response.status(400).json({
+        success: false,
+        errorCode:2,
+        errorParameter: error.validationErrors.body[0].params.missingProperty,
+        errorReason: error.validationErrors.body[0].keyword,
+        errorMessage: error.validationErrors.body[0].message
+      })
+    }
+    else if(error.validationErrors.body[0].keyword == "enum"){
+        response.status(400).json({
+          success: false,
+          errorCode:3,
+          errorParameter: error.validationErrors.body[0].instancePath.substr(1),
+          errorReason: error.validationErrors.body[0].keyword,
+          errorMessage: error.validationErrors.body[0].message,
+          allowedValues: error.validationErrors.body[0].params.allowedValues
+        })
+      }
+    else if(error.validationErrors.body[0].keyword == "minimum"){
+      response.status(400).json({
+        success: false,
+        errorCode:4,
+        errorParameter: error.validationErrors.body[0].instancePath.substr(1),
+        errorReason: error.validationErrors.body[0].keyword,
+        errorMessage: error.validationErrors.body[0].message,
+        limit: error.validationErrors.body[0].params.limit
+      })
+    }
+    else if(error.validationErrors.body[0].keyword == "maximum"){
+      response.status(400).json({
+        success: false,
+        errorCode:5,
+        errorParameter: error.validationErrors.body[0].instancePath.substr(1),
+        errorReason: error.validationErrors.body[0].keyword,
+        errorMessage: error.validationErrors.body[0].message,
+        limit: error.validationErrors.body[0].params.limit
+      })
+    }
+    else if(error.validationErrors.body[0].keyword == "pattern"){
+      response.status(400).json({
+        success: false,
+        errorCode:6,
+        errorParameter: error.validationErrors.body[0].instancePath.substr(1),
+        errorReason: error.validationErrors.body[0].keyword,
+        errorMessage: error.validationErrors.body[0].message,
+        pattern: error.validationErrors.body[0].params.pattern
+      })
+    }
+    else{
+      response.status(400).send(error.validationErrors);
+    }
     next();
   } else {
     // Pass error on if not a validation error

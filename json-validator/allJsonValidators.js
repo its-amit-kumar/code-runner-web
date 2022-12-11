@@ -10,29 +10,29 @@ const getSubmissionSchema = {
 
 const registerUserSchema = {
     type:"object",
-    required:["email", "firstName", "lastName", "password"],
+    required:["email", "firstName", "secondName", "password"],
     properties:{
         email : {
             type:"string",
-            RegExp:"^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+            pattern:"^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
             maxLength:50,
             minLength:5,
         },
         firstName:{
             type:"string",
-            RegExp:"^[a-zA-Z]+$",
+            pattern:"^[a-zA-Z]+$",
             maxLength:50,
             minLength:1,
         },
         secondName:{
             type:"string",
-            RegExp:"^[a-zA-Z]+$",
+            pattern:"^[a-zA-Z]+$",
             maxLength:50,
             minLength:1,
         },
         password:{
             type:"string",
-            RegExp:"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})",
+            pattern:"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})",
             maxLength:200,
             minLength:8,
         }
