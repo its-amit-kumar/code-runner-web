@@ -8,7 +8,7 @@ auth = (req, res, next) => {
             var tokenJwt = req.headers.authorization.substring(7, req.headers.authorization.length);
         } else {
             res.status(401)
-            res.json({success:false, "errorMessage":"Bearer token not found", errorCode:"3"})
+            res.json({success:false, "errorMessage":"Bearer token not found", errorCode:3})
             return
         }
         const verified = jwt.verify(tokenJwt, jwtSecretKey)
@@ -16,13 +16,13 @@ auth = (req, res, next) => {
             next()
         }else{
             res.status(401)
-            res.send({"success":false, "errorMessage":"User not logged in", "errorCode":"1"})
+            res.send({"success":false, "errorMessage":"User not logged in", "errorCode":1})
             return
         }
     }
     catch(error){
        res.status(401)
-       res.send({"success":false, "errorMessage":"Error occured while authentication", "errorCode":"2"})
+       res.send({"success":false, "errorMessage":"Error occured while authentication", "errorCode":2})
        return
 
     }

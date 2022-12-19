@@ -10,7 +10,6 @@ const getRunCodeSubmission = async (req, res) =>{
     res.status(200)
     res.json({
         success:true,
-        errorMessage:"",
         Id:sub.Id,
         isComplete:sub.isComplete,
         err:sub.err,

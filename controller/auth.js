@@ -47,7 +47,8 @@ const register = async (req, res) => {
             secondName: secondName,
             password:password,
             isEmailVerified:false,
-            apiToken:apiKey
+            apiToken:apiKey,
+            emailValidTill:-1 //Date.now() + 1000*60*60*24*7,
         })
         newUser.save({session})
         const newApiToken = new apiTokenModel({
@@ -76,10 +77,19 @@ const register = async (req, res) => {
 
 const login =  async(req, res) => {
     const email = req.body.email
-    const password = await createHash(req.body.password) 
+    const password = req.body.password
+    console.log(email)
+    console.log(password)
     try{
-    const loggedInUser = await user.find({email:email, password:password})
-    if(Object.keys(loggedInUser).length === 0){
+    const loggedInUserNum = await user.find({email:email})
+    if(Object.keys(loggedInUserNum).length !== 0){
+        const loggedInUser = loggedInUserNum[0]
+        const isPasswordCorrect = await bcrypt.compare(password, loggedInUser.password)
+        console.log(isPasswordCorrect)
+        if(!isPasswordCorrect){
+            res.json({success:false, errorCode:"2", errorMessage:"No such user and password exists"})
+            return
+        }
         const jwtSecretKey = process.env.SECRET_JWT
         const token = jwt.sign(
             {
@@ -95,7 +105,7 @@ const login =  async(req, res) => {
         res.json({success:true, token:token})
     }
     else{
-        res.json({success:false, errorCode:"2", errorMessage:"No such user exists"})
+        res.json({success:false, errorCode:"2", errorMessage:"No such user and password exists"})
     }
     }
     catch(error){

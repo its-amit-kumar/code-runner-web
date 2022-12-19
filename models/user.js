@@ -27,7 +27,11 @@ const user = mongoose.Schema({
         type:String,
         required:true,
         unique:true,
-    }
+    },
+    emailValidTill:{
+        type:Number,
+        required:true,
+    },
 })
 
 
