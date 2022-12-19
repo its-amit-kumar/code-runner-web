@@ -12,6 +12,7 @@ const api = require('./routes/api')
 const api_auth = require('./middleware/api_auth')
 const { Validator, ValidationError } = require("express-json-validator-middleware")
 const {setupLogging} = require("./middleware/logging")
+const path = require('path')
 dotenv.config()
 const connectDB = require('./config/db')
 connectDB()
@@ -116,5 +117,13 @@ app.use((error, request, response, next) => {
   }
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"), (err) => {
+      if (err) {
+        res.status(500).send("not found");
+      }
+  }
+    );
+});
 console.log("listening")
 app.listen(5000)
